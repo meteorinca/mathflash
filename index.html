@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Flashcards — 4th & 5th Grade</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f6f7f9;
+            --surface: #ffffff;
+            --surface-raised: #ffffff;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --text-tertiary: #9ca3af;
+            --border: #e5e7eb;
+            --border-strong: #d1d5db;
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --accent-dark: #1d4ed8;
+            --success: #16a34a;
+            --success-light: #dcfce7;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --danger-light: #fee2e2;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --radius-sm: 6px;
+            --radius: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0f1117;
+                --surface: #1a1d26;
+                --surface-raised: #222633;
+                --text-primary: #f3f4f6;
+                --text-secondary: #9ca3af;
+                --text-tertiary: #6b7280;
+                --border: #2d313e;
+                --border-strong: #3f4554;
+                --accent: #60a5fa;
+                --accent-light: #1e3a5f;
+                --accent-dark: #93c5fd;
+                --success: #4ade80;
+                --success-light: #14532d;
+                --warning: #fbbf24;
+                --danger: #f87171;
+                --danger-light: #7f1d1d;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            height: 100%;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(12px);
+            background-color: color-mix(in srgb, var(--surface) 92%, transparent);
+        }
+
+        .header-inner {
+            max-width: 720px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: -0.02em;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            border-radius: var(--radius);
+            display: grid;
+            place-items: center;
+            color: white;
+            font-weight: 700;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .stats {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .stat-badge {
+            background: var(--accent-light);
+            color: var(--accent-dark);
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        /* Main */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 24px 16px 40px;
+            gap: 20px;
+            max-width: 720px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Filter Tabs */
+        .tabs {
+            display: flex;
+            gap: 6px;
+            background: var(--surface);
+            padding: 4px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tab {
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+        }
+
+        .tab:hover {
+            color: var(--text-primary);
+            background: var(--bg);
+        }
+
+        .tab.active {
+            background: var(--text-primary);
+            color: var(--surface);
+        }
+
+        /* Progress Bar */
+        .progress-wrap {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .progress-track {
+            height: 6px;
+            background: var(--border);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+            border-radius: 999px;
+            transition: width var(--transition-slow);
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        /* Card Scene */
+        .scene {
+            width: 100%;
+            max-width: 560px;
+            aspect-ratio: 4 / 3;
+            perspective: 1200px;
+            position: relative;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform var(--transition-slow);
+            cursor: pointer;
+            border-radius: var(--radius-lg);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            border-radius: var(--radius-lg);
+            background: var(--surface-raised);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 32px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .card-face::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+            opacity: 0.8;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+        }
+
+        .card-grade {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-tertiary);
+            background: var(--bg);
+            padding: 4px 10px;
+            border-radius: 999px;
+        }
+
+        .card-number {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .card-front-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius);
+            background: var(--accent-light);
+            color: var(--accent-dark);
+            display: grid;
+            place-items: center;
+            font-size: 24px;
+            font-weight: 700;
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
+        }
+
+        .card-title {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            color: var(--text-primary);
+        }
+
+        .card-hint {
+            font-size: 13px;
+            color: var(--text-tertiary);
+            margin-top: 4px;
+        }
+
+        .card-back-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            max-width: 100%;
+        }
+
+        .card-back-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--accent);
+            background: var(--accent-light);
+            padding: 6px 14px;
+            border-radius: 999px;
+        }
+
+        .card-answer {
+            font-size: 18px;
+            line-height: 1.6;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .card-answer strong {
+            color: var(--accent-dark);
+            font-weight: 700;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            max-width: 560px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px 18px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-strong);
+            background: var(--surface);
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+            min-height: 40px;
+        }
+
+        .btn:hover {
+            background: var(--bg);
+            border-color: var(--text-tertiary);
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-primary {
+            background: var(--text-primary);
+            color: var(--surface);
+            border-color: var(--text-primary);
+        }
+
+        .btn-primary:hover {
+            background: var(--text-secondary);
+            border-color: var(--text-secondary);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+
+        .btn-success:hover {
+            background: #15803d;
+            border-color: #15803d;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+            border-color: var(--danger);
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+            border-color: #dc2626;
+        }
+
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            border-radius: 50%;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* Mastery buttons */
+        .mastery-bar {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            max-width: 560px;
+            justify-content: center;
+        }
+
+        .mastery-btn {
+            flex: 1;
+            max-width: 200px;
+            padding: 14px 20px;
+            border-radius: var(--radius);
+            border: 2px solid var(--border);
+            background: var(--surface);
+            font-size: 15px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .mastery-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .mastery-btn:active {
+            transform: translateY(0);
+        }
+
+        .mastery-btn.know {
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        .mastery-btn.know:hover,
+        .mastery-btn.know.mastered {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .mastery-btn.know.mastered {
+            background: var(--success);
+            color: white;
+        }
+
+        .mastery-btn.study {
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        .mastery-btn.study:hover,
+        .mastery-btn.study.marked {
+            background: var(--danger-light);
+            color: var(--danger);
+        }
+
+        .mastery-btn.study.marked {
+            background: var(--danger);
+            color: white;
+        }
+
+        .mastery-btn .label-small {
+            font-size: 11px;
+            font-weight: 500;
+            opacity: 0.8;
+        }
+
+        /* Keyboard hint */
+        .keyboard-hints {
+            display: flex;
+            gap: 16px;
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-top: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .kbd {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid var(--border-strong);
+            background: var(--bg);
+            font-family: inherit;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            box-shadow: 0 1px 0 var(--border-strong);
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state h2 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        /* Confetti canvas */
+        #confetti {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp var(--transition) forwards;
+        }
+
+        /* Mobile */
+        @media (max-width: 520px) {
+            .scene {
+                aspect-ratio: 3 / 4;
+            }
+
+            .card-title {
+                font-size: 22px;
+            }
+
+            .card-answer {
+                font-size: 16px;
+            }
+
+            .header-inner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .stats {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .mastery-btn {
+                padding: 12px 14px;
+                font-size: 14px;
+            }
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .card {
+                transition: none;
+            }
+
+            .progress-fill::after {
+                animation: none;
+            }
+
+            .animate-in {
+                animation: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="confetti"></canvas>
+
+    <header>
+        <div class="header-inner">
+            <div class="logo">
+                <div class="logo-icon">∑</div>
+                <span>Math Flashcards</span>
+            </div>
+            <div class="stats">
+                <div class="stat-item">
+                    <span>Mastered</span>
+                    <span class="stat-badge" id="mastered-count">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>Total</span>
+                    <span class="stat-badge" id="total-count">0</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="tabs" id="grade-tabs">
+            <button class="tab active" data-grade="all">All grades</button>
+            <button class="tab" data-grade="Grade 4">Grade 4</button>
+            <button class="tab" data-grade="Grade 5">Grade 5</button>
+        </div>
+
+        <div class="progress-wrap">
+            <div class="progress-label">
+                <span id="progress-text">Card 1 of 65</span>
+                <span id="progress-percent">0%</span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <div class="scene" id="scene">
+            <div class="card" id="card">
+                <div class="card-face card-front">
+                    <span class="card-number" id="card-number">1 / 65</span>
+                    <span class="card-grade" id="card-grade">Grade 4</span>
+                    <div class="card-front-content">
+                        <div class="card-icon" id="card-icon">A</div>
+                        <h2 class="card-title" id="card-title">Loading...</h2>
+                        <p class="card-hint">Tap or press Space to flip</p>
+                    </div>
+                </div>
+                <div class="card-face card-back">
+                    <span class="card-number" id="card-number-back">1 / 65</span>
+                    <span class="card-grade" id="card-grade-back">Grade 4</span>
+                    <div class="card-back-content">
+                        <span class="card-back-label">Answer</span>
+                        <p class="card-answer" id="card-answer">Loading...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mastery-bar" id="mastery-bar" style="display:none;">
+            <button class="mastery-btn study" id="btn-study" title="Mark as still learning">
+                <span>🔄 Study Again</span>
+                <span class="label-small">Still learning</span>
+            </button>
+            <button class="mastery-btn know" id="btn-know" title="Mark as mastered">
+                <span>✓ Got It</span>
+                <span class="label-small">Mastered</span>
+            </button>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-icon" id="btn-prev" title="Previous card (←)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
+            <button class="btn" id="btn-shuffle" title="Shuffle cards (S)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px">
+                    <polyline points="16 3 21 3 21 8"></polyline>
+                    <line x1="4" y1="20" x2="21" y2="3"></line>
+                    <polyline points="21 16 21 21 16 21"></polyline>
+                    <line x1="15" y1="15" x2="21" y2="21"></line>
+                    <line x1="4" y1="4" x2="9" y2="9"></line>
+                </svg>
+                Shuffle
+            </button>
+            <button class="btn" id="btn-reset" title="Reset progress (R)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px">
+                    <polyline points="1 4 1 10 7 10"></polyline>
+                    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                </svg>
+                Reset
+            </button>
+            <button class="btn btn-icon" id="btn-next" title="Next card (→)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
+        </div>
+
+        <div class="keyboard-hints">
+            <span><kbd class="kbd">Space</kbd> Flip</span>
+            <span><kbd class="kbd">←</kbd> <kbd class="kbd">→</kbd> Navigate</span>
+            <span><kbd class="kbd">K</kbd> Got it</span>
+            <span><kbd class="kbd">L</kbd> Study again</span>
+        </div>
+    </main>
+
+    <script>
+        // ========================
+        // State
+        // ========================
+        let allCards = [];
+        let filteredCards = [];
+        let currentIndex = 0;
+        let isFlipped = false;
+        let mastery = {}; // card id -> 'known' | 'learning'
+        let currentGrade = 'all';
+
+        // ========================
+        // DOM refs
+        // ========================
+        const cardEl = document.getElementById('card');
+        const cardTitle = document.getElementById('card-title');
+        const cardAnswer = document.getElementById('card-answer');
+        const cardIcon = document.getElementById('card-icon');
+        const cardNumber = document.getElementById('card-number');
+        const cardNumberBack = document.getElementById('card-number-back');
+        const cardGrade = document.getElementById('card-grade');
+        const cardGradeBack = document.getElementById('card-grade-back');
+        const progressFill = document.getElementById('progress-fill');
+        const progressText = document.getElementById('progress-text');
+        const progressPercent = document.getElementById('progress-percent');
+        const masteredCount = document.getElementById('mastered-count');
+        const totalCount = document.getElementById('total-count');
+        const masteryBar = document.getElementById('mastery-bar');
+        const btnKnow = document.getElementById('btn-know');
+        const btnStudy = document.getElementById('btn-study');
+
+        // ========================
+        // Parser
+        // ========================
+        function parseFlashcards(md) {
+            const cards = [];
+            const lines = md.split('\n');
+            let currentGrade = '';
+            let currentFront = '';
+            let currentBack = '';
+            let inBack = false;
+            let id = 0;
+
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) {
+                    if (currentFront && currentBack) {
+                        cards.push({ id: id++, grade: currentGrade, front: currentFront, back: currentBack });
+                        currentFront = '';
+                        currentBack = '';
+                        inBack = false;
+                    }
+                    continue;
+                }
+                if (line.startsWith('# ')) {
+                    currentGrade = line.replace('# ', '').trim();
+                    continue;
+                }
+                if (line.startsWith('## ')) {
+                    if (currentFront && currentBack) {
+                        cards.push({ id: id++, grade: currentGrade, front: currentFront, back: currentBack });
+                    }
+                    currentFront = line.replace('## ', '').trim();
+                    currentBack = '';
+                    inBack = false;
+                    continue;
+                }
+                if (currentFront && !inBack) {
+                    inBack = true;
+                }
+                if (inBack) {
+                    currentBack += (currentBack ? ' ' : '') + line;
+                }
+            }
+            if (currentFront && currentBack) {
+                cards.push({ id: id++, grade: currentGrade, front: currentFront, back: currentBack });
+            }
+            return cards;
+        }
+
+        // ========================
+        // Render
+        // ========================
+        function getInitial(str) {
+            return str.trim().charAt(0).toUpperCase();
+        }
+
+        function renderCard() {
+            if (!filteredCards.length) {
+                cardTitle.textContent = 'No cards';
+                cardAnswer.textContent = 'Select a different grade filter.';
+                return;
+            }
+            const card = filteredCards[currentIndex];
+            cardTitle.textContent = card.front;
+            cardAnswer.textContent = card.back;
+            cardIcon.textContent = getInitial(card.front);
+            cardNumber.textContent = `${currentIndex + 1} / ${filteredCards.length}`;
+            cardNumberBack.textContent = `${currentIndex + 1} / ${filteredCards.length}`;
+            cardGrade.textContent = card.grade;
+            cardGradeBack.textContent = card.grade;
+
+            // Mastery state
+            const state = mastery[card.id];
+            btnKnow.classList.toggle('mastered', state === 'known');
+            btnStudy.classList.toggle('marked', state === 'learning');
+            btnKnow.querySelector('span').textContent = state === 'known' ? '✓ Mastered' : '✓ Got It';
+            btnStudy.querySelector('span').textContent = state === 'learning' ? '🔄 Marked' : '🔄 Study Again';
+
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const total = filteredCards.length;
+            const known = filteredCards.filter(c => mastery[c.id] === 'known').length;
+            const pct = total ? Math.round((known / total) * 100) : 0;
+            progressFill.style.width = pct + '%';
+            progressText.textContent = `Card ${currentIndex + 1} of ${total}`;
+            progressPercent.textContent = pct + '% mastered';
+            masteredCount.textContent = known;
+            totalCount.textContent = allCards.length;
+
+            if (pct === 100 && total > 0 && known === total) {
+                triggerConfetti();
+            }
+        }
+
+        function flipCard() {
+            isFlipped = !isFlipped;
+            cardEl.classList.toggle('flipped', isFlipped);
+            masteryBar.style.display = isFlipped ? 'flex' : 'none';
+        }
+
+        function unflip() {
+            isFlipped = false;
+            cardEl.classList.remove('flipped');
+            masteryBar.style.display = 'none';
+        }
+
+        function nextCard() {
+            if (!filteredCards.length) return;
+            currentIndex = (currentIndex + 1) % filteredCards.length;
+            unflip();
+            setTimeout(renderCard, 50);
+        }
+
+        function prevCard() {
+            if (!filteredCards.length) return;
+            currentIndex = (currentIndex - 1 + filteredCards.length) % filteredCards.length;
+            unflip();
+            setTimeout(renderCard, 50);
+        }
+
+        function shuffleCards() {
+            if (!filteredCards.length) return;
+            for (let i = filteredCards.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [filteredCards[i], filteredCards[j]] = [filteredCards[j], filteredCards[i]];
+            }
+            currentIndex = 0;
+            unflip();
+            renderCard();
+        }
+
+        function resetProgress() {
+            mastery = {};
+            currentIndex = 0;
+            unflip();
+            renderCard();
+        }
+
+        function filterGrade(grade) {
+            currentGrade = grade;
+            if (grade === 'all') {
+                filteredCards = [...allCards];
+            } else {
+                filteredCards = allCards.filter(c => c.grade === grade);
+            }
+            currentIndex = 0;
+            unflip();
+            renderCard();
+        }
+
+        function markKnown() {
+            const card = filteredCards[currentIndex];
+            if (!card) return;
+            mastery[card.id] = mastery[card.id] === 'known' ? null : 'known';
+            renderCard();
+        }
+
+        function markLearning() {
+            const card = filteredCards[currentIndex];
+            if (!card) return;
+            mastery[card.id] = mastery[card.id] === 'learning' ? null : 'learning';
+            renderCard();
+        }
+
+        // ========================
+        // Confetti
+        // ========================
+        function triggerConfetti() {
+            const canvas = document.getElementById('confetti');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            const particles = [];
+            const colors = ['#2563eb', '#16a34a', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4'];
+            for (let i = 0; i < 120; i++) {
+                particles.push({
+                    x: canvas.width / 2,
+                    y: canvas.height / 2,
+                    vx: (Math.random() - 0.5) * 16,
+                    vy: (Math.random() - 0.5) * 16 - 4,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    size: Math.random() * 6 + 3,
+                    rotation: Math.random() * 360,
+                    rotSpeed: (Math.random() - 0.5) * 10,
+                    life: 1,
+                    decay: 0.008 + Math.random() * 0.012
+                });
+            }
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let alive = false;
+                for (const p of particles) {
+                    if (p.life <= 0) continue;
+                    alive = true;
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += 0.25;
+                    p.life -= p.decay;
+                    p.rotation += p.rotSpeed;
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate((p.rotation * Math.PI) / 180);
+                    ctx.globalAlpha = p.life;
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                    ctx.restore();
+                }
+                if (alive) requestAnimationFrame(draw);
+                else ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+            draw();
+        }
+
+        // ========================
+        // Event Listeners
+        // ========================
+        cardEl.addEventListener('click', flipCard);
+        document.getElementById('btn-next').addEventListener('click', nextCard);
+        document.getElementById('btn-prev').addEventListener('click', prevCard);
+        document.getElementById('btn-shuffle').addEventListener('click', shuffleCards);
+        document.getElementById('btn-reset').addEventListener('click', resetProgress);
+        btnKnow.addEventListener('click', markKnown);
+        btnStudy.addEventListener('click', markLearning);
+
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                filterGrade(tab.dataset.grade);
+            });
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            switch (e.key) {
+                case ' ': e.preventDefault(); flipCard(); break;
+                case 'ArrowRight': nextCard(); break;
+                case 'ArrowLeft': prevCard(); break;
+                case 'k': case 'K': markKnown(); break;
+                case 'l': case 'L': markLearning(); break;
+                case 's': case 'S': shuffleCards(); break;
+                case 'r': case 'R': resetProgress(); break;
+            }
+        });
+
+        // Touch swipe
+        let touchStartX = 0;
+        let touchEndX = 0;
+        cardEl.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+        cardEl.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) nextCard();
+                else prevCard();
+            }
+        }, { passive: true });
+
+        // ========================
+        // Init
+        // ========================
+        async function init() {
+            try {
+                const res = await fetch('flashcards.md');
+                const md = await res.text();
+                allCards = parseFlashcards(md);
+                filteredCards = [...allCards];
+                totalCount.textContent = allCards.length;
+                renderCard();
+            } catch (err) {
+                cardTitle.textContent = 'Error loading flashcards';
+                cardAnswer.textContent = 'Make sure flashcards.md is in the same folder as this page.';
+                console.error(err);
+            }
+        }
+
+        init();
+    </script>
+</body>
+
+</html>
