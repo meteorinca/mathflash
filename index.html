@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Flashcards — 4th & 5th Grade</title>
+    <title>Math Flashcards</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -827,9 +827,8 @@
 
     <main>
         <div class="tabs" id="grade-tabs">
-            <button class="tab active" data-grade="all">All grades</button>
-            <button class="tab" data-grade="Grade 4">Grade 4</button>
-            <button class="tab" data-grade="Grade 5">Grade 5</button>
+            <button class="tab" data-grade="all">All</button>
+            <button class="tab active" data-grade="Grade 4">Grade 4</button>
         </div>
 
         <div class="tabs practice-tabs" id="practice-tabs" style="display: none;">
@@ -1113,20 +1112,23 @@
             return result;
         }
 
-        function renderGradeTabs() {
+        function renderGradeTabs(defaultGrade = 'Grade 4') {
             const gradeTabsContainer = document.getElementById('grade-tabs');
             const grades = Array.from(new Set(allCards.map(c => c.grade).filter(Boolean)));
 
             if (grades.length <= 1 && (!grades[0] || grades[0] === 'General')) {
                 gradeTabsContainer.style.display = 'none';
-                return;
+                return 'all';
             }
             gradeTabsContainer.style.display = 'flex';
 
-            let html = `<button class="tab active" data-grade="all">All (${allCards.length})</button>`;
+            const activeGrade = grades.includes(defaultGrade) ? defaultGrade : 'all';
+
+            let html = `<button class="tab ${activeGrade === 'all' ? 'active' : ''}" data-grade="all">All (${allCards.length})</button>`;
             grades.forEach(g => {
                 const count = allCards.filter(c => c.grade === g).length;
-                html += `<button class="tab" data-grade="${escapeHtml(g)}">${escapeHtml(g)} (${count})</button>`;
+                const isActive = g === activeGrade ? 'active' : '';
+                html += `<button class="tab ${isActive}" data-grade="${escapeHtml(g)}">${escapeHtml(g)} (${count})</button>`;
             });
             gradeTabsContainer.innerHTML = html;
 
@@ -1137,6 +1139,8 @@
                     filterGrade(tab.dataset.grade);
                 });
             });
+
+            return activeGrade;
         }
 
         function renderPracticeTabs() {
@@ -1343,13 +1347,12 @@
 
                 allCards = parseFlashcards(md);
                 mastery = loadMasteryForDeck(currentDeckKey);
-                currentGrade = 'all';
                 currentIndex = 0;
                 unflip();
 
-                renderGradeTabs();
+                const activeGrade = renderGradeTabs('Grade 4');
                 renderPracticeTabs();
-                filterGrade('all');
+                filterGrade(activeGrade);
             } catch (err) {
                 cardTitle.textContent = 'Error loading flashcards';
                 cardAnswer.innerHTML = '<p class="card-p">Could not load the selected flashcard file. Please verify the file exists or load a custom file.</p>';
