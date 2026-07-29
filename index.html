@@ -132,6 +132,36 @@
             color: var(--text-secondary);
         }
 
+        .deck-selector-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .deck-select {
+            padding: 8px 14px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-strong);
+            background: var(--surface-raised);
+            color: var(--text-primary);
+            font-size: 13px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            outline: none;
+            transition: all var(--transition-fast);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .deck-select:hover {
+            border-color: var(--accent);
+        }
+
+        .deck-select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px var(--accent-light);
+        }
+
         .stat-item {
             display: flex;
             align-items: center;
@@ -655,6 +685,112 @@
                 animation: none;
             }
         }
+
+        /* Practice Mode Tabs */
+        .practice-tabs {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .mode-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-tertiary);
+            padding: 0 4px;
+        }
+
+        .card-back {
+            overflow-y: auto;
+            align-items: stretch !important;
+            text-align: left !important;
+        }
+
+        .card-back-content {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            text-align: left;
+            gap: 12px;
+            max-height: 100%;
+        }
+
+        .section-block {
+            background: var(--bg);
+            border-radius: var(--radius);
+            padding: 14px 16px;
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            text-align: left;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .section-block.why-block {
+            border-left: 4px solid var(--accent);
+            background: color-mix(in srgb, var(--accent-light) 30%, var(--surface-raised));
+        }
+
+        .section-block.how-block {
+            border-left: 4px solid var(--success);
+            background: color-mix(in srgb, var(--success-light) 30%, var(--surface-raised));
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 2px;
+        }
+
+        .badge-why {
+            background: var(--accent);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 999px;
+            letter-spacing: 0.05em;
+        }
+
+        .badge-how {
+            background: var(--success);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 999px;
+            letter-spacing: 0.05em;
+        }
+
+        .section-body {
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--text-primary);
+        }
+
+        .card-p {
+            margin-bottom: 6px;
+        }
+
+        .card-p:last-child {
+            margin-bottom: 0;
+        }
+
+        .card-list {
+            margin-left: 20px;
+            margin-bottom: 6px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .card-list li {
+            margin-bottom: 4px;
+        }
     </style>
 </head>
 
@@ -666,6 +802,15 @@
             <div class="logo">
                 <div class="logo-icon">∑</div>
                 <span>Math Flashcards</span>
+            </div>
+            <div class="deck-selector-wrap">
+                <select id="deck-select" class="deck-select" aria-label="Select Flashcard Deck">
+                    <option value="flashcards.md">How To Do It (flashcards.md)</option>
+                    <option value="flashcards_when.md">When To Use It (flashcards_when.md)</option>
+                    <option value="flashcardsMJ.md">Why & How (flashcardsMJ.md)</option>
+                    <option value="__custom__">📁 Load Custom File...</option>
+                </select>
+                <input type="file" id="file-input" accept=".md,.txt" style="display: none;">
             </div>
             <div class="stats">
                 <div class="stat-item">
@@ -685,6 +830,13 @@
             <button class="tab active" data-grade="all">All grades</button>
             <button class="tab" data-grade="Grade 4">Grade 4</button>
             <button class="tab" data-grade="Grade 5">Grade 5</button>
+        </div>
+
+        <div class="tabs practice-tabs" id="practice-tabs" style="display: none;">
+            <span class="mode-label">Mode:</span>
+            <button class="tab active" data-mode="both">Both (Why & How)</button>
+            <button class="tab" data-mode="why">Why Only</button>
+            <button class="tab" data-mode="how">How Only</button>
         </div>
 
         <div class="progress-wrap">
@@ -713,7 +865,7 @@
                     <span class="card-grade" id="card-grade-back">Grade 4</span>
                     <div class="card-back-content">
                         <span class="card-back-label">Answer</span>
-                        <p class="card-answer" id="card-answer">Loading...</p>
+                        <div class="card-answer" id="card-answer">Loading...</div>
                     </div>
                 </div>
             </div>
@@ -782,6 +934,8 @@
         let isFlipped = false;
         let mastery = {}; // card id -> 'known' | 'learning'
         let currentGrade = 'all';
+        let currentDeckKey = 'flashcards.md';
+        let currentPracticeMode = 'both'; // 'both' | 'why' | 'how'
 
         // ========================
         // DOM refs
@@ -802,6 +956,28 @@
         const masteryBar = document.getElementById('mastery-bar');
         const btnKnow = document.getElementById('btn-know');
         const btnStudy = document.getElementById('btn-study');
+        const deckSelect = document.getElementById('deck-select');
+        const fileInput = document.getElementById('file-input');
+        const practiceTabsContainer = document.getElementById('practice-tabs');
+        const cardHint = document.querySelector('.card-hint');
+
+        // ========================
+        // Storage helpers
+        // ========================
+        function loadMasteryForDeck(deckKey) {
+            try {
+                const saved = localStorage.getItem('mathflash_mastery_' + deckKey);
+                return saved ? JSON.parse(saved) : {};
+            } catch (e) {
+                return {};
+            }
+        }
+
+        function saveMasteryForDeck(deckKey) {
+            try {
+                localStorage.setItem('mathflash_mastery_' + deckKey, JSON.stringify(mastery));
+            } catch (e) {}
+        }
 
         // ========================
         // Parser
@@ -811,46 +987,176 @@
             const lines = md.split('\n');
             let currentGrade = '';
             let currentFront = '';
-            let currentBack = '';
-            let inBack = false;
+            let rawLines = [];
             let id = 0;
 
+            function saveCard() {
+                if (!currentFront || !rawLines.length) return;
+
+                let whyText = '';
+                let howText = '';
+                let isWhy = false;
+                let isHow = false;
+                let genericLines = [];
+
+                for (let l of rawLines) {
+                    const trimmed = l.trim();
+                    if (trimmed === '---') continue;
+
+                    if (/^\*\*Why:\*\*/i.test(trimmed) || /^Why:/i.test(trimmed)) {
+                        isWhy = true;
+                        isHow = false;
+                        const text = trimmed.replace(/^\*\*Why:\*\*/i, '').replace(/^Why:/i, '').trim();
+                        if (text) whyText += (whyText ? '\n' : '') + text;
+                        continue;
+                    }
+
+                    if (/^\*\*How.*:\*\*/i.test(trimmed) || /^How.*:/i.test(trimmed)) {
+                        isHow = true;
+                        isWhy = false;
+                        const text = trimmed.replace(/^\*\*How.*:\*\*/i, '').replace(/^How.*:/i, '').trim();
+                        if (text) howText += (howText ? '\n' : '') + text;
+                        continue;
+                    }
+
+                    if (isWhy) {
+                        whyText += (whyText ? '\n' : '') + trimmed;
+                    } else if (isHow) {
+                        howText += (howText ? '\n' : '') + trimmed;
+                    } else {
+                        genericLines.push(trimmed);
+                    }
+                }
+
+                const fullBack = rawLines.filter(l => l.trim() !== '---').join('\n').trim();
+
+                cards.push({
+                    id: id++,
+                    grade: currentGrade || 'General',
+                    front: currentFront,
+                    back: fullBack,
+                    why: whyText.trim(),
+                    how: howText.trim()
+                });
+
+                currentFront = '';
+                rawLines = [];
+            }
+
             for (let i = 0; i < lines.length; i++) {
-                const line = lines[i].trim();
-                if (!line) {
-                    if (currentFront && currentBack) {
-                        cards.push({ id: id++, grade: currentGrade, front: currentFront, back: currentBack });
-                        currentFront = '';
-                        currentBack = '';
-                        inBack = false;
-                    }
+                const line = lines[i];
+                const trimmed = line.trim();
+
+                if (trimmed === '---') continue;
+
+                if (trimmed.startsWith('# ')) {
+                    saveCard();
+                    currentGrade = trimmed.replace('# ', '').trim();
                     continue;
                 }
-                if (line.startsWith('# ')) {
-                    currentGrade = line.replace('# ', '').trim();
+
+                if (trimmed.startsWith('## ')) {
+                    saveCard();
+                    currentFront = trimmed.replace('## ', '').trim();
                     continue;
                 }
-                if (line.startsWith('## ')) {
-                    if (currentFront && currentBack) {
-                        cards.push({ id: id++, grade: currentGrade, front: currentFront, back: currentBack });
-                    }
-                    currentFront = line.replace('## ', '').trim();
-                    currentBack = '';
-                    inBack = false;
-                    continue;
-                }
-                if (currentFront && !inBack) {
-                    inBack = true;
-                }
-                if (inBack) {
-                    currentBack += (currentBack ? ' ' : '') + line;
+
+                if (currentFront) {
+                    rawLines.push(line);
                 }
             }
-            if (currentFront && currentBack) {
-                cards.push({ id: id++, grade: currentGrade, front: currentFront, back: currentBack });
-            }
+            saveCard();
             return cards;
         }
+
+        // ========================
+        // Dynamic Grade & Practice Tabs
+        // ========================
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+        }
+
+        function renderMarkdown(str) {
+            if (!str) return '';
+            let html = escapeHtml(str);
+            // Bold
+            html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            // Italic
+            html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
+
+            const lines = html.split('\n');
+            let inList = false;
+            let result = '';
+
+            for (let l of lines) {
+                const trimmed = l.trim();
+                const listMatch = trimmed.match(/^(\d+)\.\s+(.*)/);
+                if (listMatch) {
+                    if (!inList) {
+                        result += '<ol class="card-list">';
+                        inList = true;
+                    }
+                    result += `<li>${listMatch[2]}</li>`;
+                } else {
+                    if (inList) {
+                        result += '</ol>';
+                        inList = false;
+                    }
+                    if (trimmed) {
+                        result += `<p class="card-p">${trimmed}</p>`;
+                    }
+                }
+            }
+            if (inList) {
+                result += '</ol>';
+            }
+            return result;
+        }
+
+        function renderGradeTabs() {
+            const gradeTabsContainer = document.getElementById('grade-tabs');
+            const grades = Array.from(new Set(allCards.map(c => c.grade).filter(Boolean)));
+
+            if (grades.length <= 1 && (!grades[0] || grades[0] === 'General')) {
+                gradeTabsContainer.style.display = 'none';
+                return;
+            }
+            gradeTabsContainer.style.display = 'flex';
+
+            let html = `<button class="tab active" data-grade="all">All (${allCards.length})</button>`;
+            grades.forEach(g => {
+                const count = allCards.filter(c => c.grade === g).length;
+                html += `<button class="tab" data-grade="${escapeHtml(g)}">${escapeHtml(g)} (${count})</button>`;
+            });
+            gradeTabsContainer.innerHTML = html;
+
+            gradeTabsContainer.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    gradeTabsContainer.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    filterGrade(tab.dataset.grade);
+                });
+            });
+        }
+
+        function renderPracticeTabs() {
+            const hasWhyHow = allCards.some(c => c.why || c.how);
+            if (!hasWhyHow) {
+                practiceTabsContainer.style.display = 'none';
+                return;
+            }
+            practiceTabsContainer.style.display = 'flex';
+        }
+
+        practiceTabsContainer.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                practiceTabsContainer.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentPracticeMode = tab.dataset.mode;
+                unflip();
+                renderCard();
+            });
+        });
 
         // ========================
         // Render
@@ -862,17 +1168,64 @@
         function renderCard() {
             if (!filteredCards.length) {
                 cardTitle.textContent = 'No cards';
-                cardAnswer.textContent = 'Select a different grade filter.';
+                cardAnswer.innerHTML = '<p class="card-p">Select a different grade filter or deck.</p>';
                 return;
             }
             const card = filteredCards[currentIndex];
             cardTitle.textContent = card.front;
-            cardAnswer.textContent = card.back;
             cardIcon.textContent = getInitial(card.front);
             cardNumber.textContent = `${currentIndex + 1} / ${filteredCards.length}`;
             cardNumberBack.textContent = `${currentIndex + 1} / ${filteredCards.length}`;
             cardGrade.textContent = card.grade;
             cardGradeBack.textContent = card.grade;
+
+            // Practice mode rendering
+            const hasWhyHow = card.why || card.how;
+            if (hasWhyHow) {
+                let backHtml = '';
+                if (currentPracticeMode === 'why') {
+                    if (cardHint) cardHint.textContent = 'Why do we use this? Tap or press Space to check';
+                    backHtml = `
+                        <div class="section-block why-block">
+                            <div class="section-header"><span class="badge-why">WHY</span></div>
+                            <div class="section-body">${renderMarkdown(card.why || card.back)}</div>
+                        </div>
+                    `;
+                } else if (currentPracticeMode === 'how') {
+                    if (cardHint) cardHint.textContent = 'How do we do this? Tap or press Space to check';
+                    backHtml = `
+                        <div class="section-block how-block">
+                            <div class="section-header"><span class="badge-how">HOW</span></div>
+                            <div class="section-body">${renderMarkdown(card.how || card.back)}</div>
+                        </div>
+                    `;
+                } else {
+                    if (cardHint) cardHint.textContent = 'Tap or press Space to flip';
+                    if (card.why) {
+                        backHtml += `
+                            <div class="section-block why-block">
+                                <div class="section-header"><span class="badge-why">WHY</span></div>
+                                <div class="section-body">${renderMarkdown(card.why)}</div>
+                            </div>
+                        `;
+                    }
+                    if (card.how) {
+                        backHtml += `
+                            <div class="section-block how-block">
+                                <div class="section-header"><span class="badge-how">HOW</span></div>
+                                <div class="section-body">${renderMarkdown(card.how)}</div>
+                            </div>
+                        `;
+                    }
+                    if (!card.why && !card.how) {
+                        backHtml = renderMarkdown(card.back);
+                    }
+                }
+                cardAnswer.innerHTML = backHtml;
+            } else {
+                if (cardHint) cardHint.textContent = 'Tap or press Space to flip';
+                cardAnswer.innerHTML = renderMarkdown(card.back);
+            }
 
             // Mastery state
             const state = mastery[card.id];
@@ -938,6 +1291,7 @@
 
         function resetProgress() {
             mastery = {};
+            saveMasteryForDeck(currentDeckKey);
             currentIndex = 0;
             unflip();
             renderCard();
@@ -959,6 +1313,7 @@
             const card = filteredCards[currentIndex];
             if (!card) return;
             mastery[card.id] = mastery[card.id] === 'known' ? null : 'known';
+            saveMasteryForDeck(currentDeckKey);
             renderCard();
         }
 
@@ -966,7 +1321,40 @@
             const card = filteredCards[currentIndex];
             if (!card) return;
             mastery[card.id] = mastery[card.id] === 'learning' ? null : 'learning';
+            saveMasteryForDeck(currentDeckKey);
             renderCard();
+        }
+
+        // ========================
+        // Deck Loading
+        // ========================
+        async function loadDeck(deckKey, customContent = null, customName = '') {
+            try {
+                let md = '';
+                if (customContent !== null) {
+                    md = customContent;
+                    currentDeckKey = 'custom_' + (customName || 'deck');
+                } else {
+                    currentDeckKey = deckKey;
+                    const res = await fetch(deckKey);
+                    if (!res.ok) throw new Error(`HTTP status ${res.status}`);
+                    md = await res.text();
+                }
+
+                allCards = parseFlashcards(md);
+                mastery = loadMasteryForDeck(currentDeckKey);
+                currentGrade = 'all';
+                currentIndex = 0;
+                unflip();
+
+                renderGradeTabs();
+                renderPracticeTabs();
+                filterGrade('all');
+            } catch (err) {
+                cardTitle.textContent = 'Error loading flashcards';
+                cardAnswer.innerHTML = '<p class="card-p">Could not load the selected flashcard file. Please verify the file exists or load a custom file.</p>';
+                console.error(err);
+            }
         }
 
         // ========================
@@ -1029,16 +1417,39 @@
         btnKnow.addEventListener('click', markKnown);
         btnStudy.addEventListener('click', markLearning);
 
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                filterGrade(tab.dataset.grade);
-            });
+        deckSelect.addEventListener('change', (e) => {
+            const val = e.target.value;
+            if (val === '__custom__') {
+                fileInput.click();
+            } else {
+                loadDeck(val);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) {
+                deckSelect.value = currentDeckKey.includes('.md') ? currentDeckKey : 'flashcards.md';
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+                const content = evt.target.result;
+                let customOpt = deckSelect.querySelector('option[value="custom_loaded"]');
+                if (!customOpt) {
+                    customOpt = document.createElement('option');
+                    customOpt.value = 'custom_loaded';
+                    deckSelect.appendChild(customOpt);
+                }
+                customOpt.textContent = `📄 ${file.name}`;
+                deckSelect.value = 'custom_loaded';
+                loadDeck('custom_loaded', content, file.name);
+            };
+            reader.readAsText(file);
         });
 
         document.addEventListener('keydown', (e) => {
-            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
             switch (e.key) {
                 case ' ': e.preventDefault(); flipCard(); break;
                 case 'ArrowRight': nextCard(); break;
@@ -1066,22 +1477,7 @@
         // ========================
         // Init
         // ========================
-        async function init() {
-            try {
-                const res = await fetch('flashcards.md');
-                const md = await res.text();
-                allCards = parseFlashcards(md);
-                filteredCards = [...allCards];
-                totalCount.textContent = allCards.length;
-                renderCard();
-            } catch (err) {
-                cardTitle.textContent = 'Error loading flashcards';
-                cardAnswer.textContent = 'Make sure flashcards.md is in the same folder as this page.';
-                console.error(err);
-            }
-        }
-
-        init();
+        loadDeck('flashcards.md');
     </script>
 </body>
 
