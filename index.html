@@ -805,9 +805,9 @@
             </div>
             <div class="deck-selector-wrap">
                 <select id="deck-select" class="deck-select" aria-label="Select Flashcard Deck">
-                    <option value="flashcards.md">How To Do It (flashcards.md)</option>
-                    <option value="flashcards_when.md">When To Use It (flashcards_when.md)</option>
-                    <option value="flashcardsMJ.md">Why & How (flashcardsMJ.md)</option>
+                    <option value="flashcardsMJ.md" selected>flashcardsMJ.md</option>
+                    <option value="flashcards.md">flashcards.md</option>
+                    <option value="flashcards_when.md">flashcards_when.md</option>
                     <option value="__custom__">📁 Load Custom File...</option>
                 </select>
                 <input type="file" id="file-input" accept=".md,.txt" style="display: none;">
@@ -934,7 +934,7 @@
         let isFlipped = false;
         let mastery = {}; // card id -> 'known' | 'learning'
         let currentGrade = 'all';
-        let currentDeckKey = 'flashcards.md';
+        let currentDeckKey = 'flashcardsMJ.md';
         let currentPracticeMode = 'both'; // 'both' | 'why' | 'how'
 
         // ========================
@@ -1429,7 +1429,7 @@
         fileInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (!file) {
-                deckSelect.value = currentDeckKey.includes('.md') ? currentDeckKey : 'flashcards.md';
+                deckSelect.value = currentDeckKey.includes('.md') ? currentDeckKey : 'flashcardsMJ.md';
                 return;
             }
             const reader = new FileReader();
@@ -1477,7 +1477,7 @@
         // ========================
         // Init
         // ========================
-        loadDeck('flashcards.md');
+        loadDeck('flashcardsMJ.md');
     </script>
 </body>
 
