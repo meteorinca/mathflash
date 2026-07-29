@@ -5,7 +5,7 @@
 **How:** Digits change their value based on where they sit. A 3 in the tens spot is worth 30; that same 3 in the hundreds is worth 300. Each hop left = ×10. Commas are just labels that say "a new group starts here": millions, thousands, ones.
 
 ## Rounding
-**Why:** We don't always need the exact number — sometimes a close enough is good enough.
+**Why:** We don't always need the exact number — sometimes a close enough number is good enough.
 **How:** Find the place you're rounding to. Look at the digit to its right. 5 or more? Kick it up one. 4 or less? Let it rest. Everything after becomes zeros.
 
 ## Area
